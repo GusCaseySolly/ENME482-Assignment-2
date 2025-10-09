@@ -152,7 +152,7 @@ T_rot_o = robodk.UR_2_Pose(robodk.Pose_2_UR(T0_rot_o))
 #robot_program.RunCode()
 #robot_program.WaitFinished()
 
-tls.rancilio_tool_attach_r_ati()
+
 UR5.MoveJ(J_intermediatepoint_1, blocking=True)
 
 
@@ -168,4 +168,5 @@ UR5.MoveL(J_intermediatepoint_3, blocking=True)
 
 
 UR5.MoveJ(J_intermediatepoint_1, blocking=True)
+
 UR5.MoveJ(J_intermediatepoint_2, blocking=True)
