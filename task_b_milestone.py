@@ -33,6 +33,7 @@ tls = tools.Tools(RDK)
 J_intermediatepoint_1 = [-35.350000, -85.850000, -126.250000, -58.440000, 88.740000, -5.100000]
 J_intermediatepoint_2 = [-28.120000, -104.880000, -113.020000, -47.960000, 90.000000, -6.840000]
 
+fully_down =[-25.250000, -103.170000, -117.900000, -51.320000, 89.770000, -5.190000]
 
 #Define the position where the mazzer tool moves to to unlock the mazzer scale
 
@@ -101,6 +102,7 @@ UR5.MoveL(T_0, blocking=True)
 
 UR5.MoveL(T_1, blocking=True)
 
+UR5.MoveL(fully_down, blocking=True)
+
 time.sleep(1)
-# go back home
-UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
+UR5.MoveJ(J_intermediatepoint_1, blocking=True)
