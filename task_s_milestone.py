@@ -47,7 +47,7 @@ UR_T_R = np.array([[ np.cos(60* np.pi/180),     -np.sin(60* np.pi/180),     0,  
                   [              0,     0,    0,         1.000000 ]])
 
   
-
+#------
 
 R_T_RTH_pre = np.array([[             0,            0,    -1,   -14.5  ],
                  [               0,             1,    0,  69.6 ],
@@ -64,7 +64,7 @@ tilt = np.array([[ np.cos(fix* np.pi/180),     0,     -np.sin(fix* np.pi/180),  
 
 R_T_RTH = R_T_RTH_pre @ tilt
 
-
+#-----------
 
 RCT_T_RTH = np.array([[ 1,     0,    0, 30 ],
                  [ 0,     1,    0,  0 ],
@@ -132,7 +132,7 @@ T_rot_int = robodk.UR_2_Pose(robodk.Pose_2_UR(T0_rot_int))
 #-------------------------------------------------------------------------------------------------------------
 
 T_rotated_liner_off = np.array([[ 1,     0,     0,  0 ],
-                   [    0,     np.cos(-15* np.pi/180),    -np.sin(-15* np.pi/180),  +5 ],
+                   [    0,     np.cos(-15* np.pi/180),    -np.sin(-15* np.pi/180),  -22.5 ],
                  [      0,     np.sin(-15* np.pi/180),        np.cos(-15* np.pi/180),   -50 ],
                   [     0,     0,    0,         1.000000 ]])               
 
@@ -168,5 +168,4 @@ UR5.MoveL(J_intermediatepoint_3, blocking=True)
 
 
 UR5.MoveJ(J_intermediatepoint_1, blocking=True)
-
 UR5.MoveJ(J_intermediatepoint_2, blocking=True)
