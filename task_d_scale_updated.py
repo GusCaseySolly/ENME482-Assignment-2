@@ -143,7 +143,26 @@ sleep(1)
 UR5.MoveJ(T_loc, blocking=True)
 sleep(1)
 
-UR5.MoveJ(T_pull, blocking=True)
+turn_1 = [-29.320000, -104.580000, -113.280000, -143.550000, -52.670000, -130.580000]
+UR5.MoveL(turn_1, blocking=True)
+
+
+turn_2 =[-28.140000, -104.510000, -113.310000, -143.510000, -46.890000, -130.610000]
+UR5.MoveJ(turn_2, blocking=True)
+
+turn_3 =[-18.390000, -99.720000, -110.440000, -145.450000, -22.920000, -135.410000]
+UR5.MoveJ(turn_3, blocking=True)
+
+turn_4 = [-10.820000, -107.440000, -101.820000, -146.420000, 10.560000, -137.790000]
+UR5.MoveJ(turn_4, blocking=True)
+
+turn_f=[-8.270000, -107.440000, -101.830000, -146.420000, 13.150000, -137.800000]
+UR5.MoveJ(turn_f, blocking=True)
+
+let_go = [-8.270000, -107.440000, -101.830000, -146.420000, 26.690000, -137.790000]
+UR5.MoveJ(let_go, blocking=True)
+
+#UR5.MoveJ(T_pull, blocking=True)
 sleep(1)
 
 
@@ -159,8 +178,65 @@ current_weight = 0.0
 
 while current_weight < target_weight:
     if simulate:
-        current_weight += 2.5  # simulate fill rate
+        UR5.MoveJ(J_intermediatepoint2, blocking=True)
+        UR5.MoveJ(J_intermediatepoint1, blocking=True)
+        sleep(1)
+
+        UR5.MoveJ(T_loc, blocking=True)
+        sleep(1)
+
+        turn_1 = [-29.320000, -104.580000, -113.280000, -143.550000, -52.670000, -130.580000]
+        UR5.MoveL(turn_1, blocking=True)
+
+
+        turn_2 =[-28.140000, -104.510000, -113.310000, -143.510000, -46.890000, -130.610000]
+        UR5.MoveJ(turn_2, blocking=True)
+
+        turn_3 =[-18.390000, -99.720000, -110.440000, -145.450000, -22.920000, -135.410000]
+        UR5.MoveJ(turn_3, blocking=True)
+
+        turn_4 = [-10.820000, -107.440000, -101.820000, -146.420000, 10.560000, -137.790000]
+        UR5.MoveJ(turn_4, blocking=True)
+
+        turn_f=[-8.270000, -107.440000, -101.830000, -146.420000, 13.150000, -137.800000]
+        UR5.MoveJ(turn_f, blocking=True)
+
+        let_go = [-8.270000, -107.440000, -101.830000, -146.420000, 26.690000, -137.790000]
+        UR5.MoveJ(let_go, blocking=True)
+
+        #UR5.MoveJ(T_pull, blocking=True)
+        sleep(1)
+        current_weight += 20  # simulate fill rate
     else:
+        UR5.MoveJ(J_intermediatepoint2, blocking=True)
+        UR5.MoveJ(J_intermediatepoint1, blocking=True)
+        sleep(1)
+
+        UR5.MoveJ(T_loc, blocking=True)
+        sleep(1)
+
+        turn_1 = [-29.320000, -104.580000, -113.280000, -143.550000, -52.670000, -130.580000]
+        UR5.MoveL(turn_1, blocking=True)
+
+
+        turn_2 =[-28.140000, -104.510000, -113.310000, -143.510000, -46.890000, -130.610000]
+        UR5.MoveJ(turn_2, blocking=True)
+
+        turn_3 =[-18.390000, -99.720000, -110.440000, -145.450000, -22.920000, -135.410000]
+        UR5.MoveJ(turn_3, blocking=True)
+
+        turn_4 = [-10.820000, -107.440000, -101.820000, -146.420000, 10.560000, -137.790000]
+        UR5.MoveJ(turn_4, blocking=True)
+
+        turn_f=[-8.270000, -107.440000, -101.830000, -146.420000, 13.150000, -137.800000]
+        UR5.MoveJ(turn_f, blocking=True)
+
+        let_go = [-8.270000, -107.440000, -101.830000, -146.420000, 26.690000, -137.790000]
+        UR5.MoveJ(let_go, blocking=True)
+
+        #UR5.MoveJ(T_pull, blocking=True)
+        sleep(1)
+
         current_weight = client.read()
     #RDK.ShowMessage(f"[Robot 1] Current weight: {current_weight:.2f} g")
     sleep(0.5)
@@ -171,3 +247,4 @@ sleep(1)
 RDK.ShowMessage("✅ Robot 1 scale reached %.1f g. Returning to T_loc..." % current_weight)
 UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
 RDK.ShowMessage("☕ Robot 1 cycle complete.")
+
