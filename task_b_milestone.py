@@ -106,3 +106,4 @@ UR5.MoveL(fully_down, blocking=True)
 
 time.sleep(1)
 UR5.MoveJ(J_intermediatepoint_1, blocking=True)
+tls.mazzer_tool_detach_r_ati()
