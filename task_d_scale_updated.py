@@ -70,9 +70,9 @@ MF_T_ML_loc = np.array([
 ])
 
 MF_T_ML_pull = np.array([
-    [-0.87898362, 0.47685197, 0., 160],
+    [-0.87898362, 0.47685197, 0., 120],
     [-0.17476683, -0.32214857, 0.93041757, -131.3],
-    [0.44367145, 0.8178218, 0.36650123, -58],
+    [0.44367145, 0.8178218, 0.36650123, 0],
     [0., 0., 0., 1.]
 ])
 
@@ -146,8 +146,7 @@ sleep(1)
 UR5.MoveJ(T_pull, blocking=True)
 sleep(1)
 
-UR5.MoveJ(T_out, blocking=True)
-sleep(1)
+
 
 
 # # ================================
@@ -166,20 +165,9 @@ while current_weight < target_weight:
     #RDK.ShowMessage(f"[Robot 1] Current weight: {current_weight:.2f} g")
     sleep(0.5)
 
+UR5.MoveJ(T_out, blocking=True)
+sleep(1)
+
 RDK.ShowMessage("✅ Robot 1 scale reached %.1f g. Returning to T_loc..." % current_weight)
-
-# ================================
-# Return to T_loc
-# ================================
-UR5.MoveJ(T_pull, blocking=True)
-
-sleep(1)
-
-UR5.MoveJ(T_loc, blocking=True)
-
-sleep(1)
-
-UR5.MoveJ(T_loc_out, blocking=True)
-
 UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
 RDK.ShowMessage("☕ Robot 1 cycle complete.")
