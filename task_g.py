@@ -93,15 +93,15 @@ T_0_remove = rm.Mat(UR_T_TCP_remove.tolist())
 T_remove = robodk.UR_2_Pose(robodk.Pose_2_UR(T_0_remove))
 
 # Reset the sim
-robot_program = RDK.Item("Reset_Simulation_L", ITEM_TYPE_PROGRAM)
-robot_program.RunCode()
-robot_program.WaitFinished()
+#robot_program = RDK.Item("Reset_Simulation_L", ITEM_TYPE_PROGRAM)
+#robot_program.RunCode()
+#robot_program.WaitFinished()
 
 # Pick up mazzer tool
 
 
 
-tls.rancilio_tool_attach_l_ati()
+#tls.rancilio_tool_attach_l_ati()
 
 tls.wdt_open()
 
@@ -133,5 +133,3 @@ UR5.MoveJ(J_intermediatepoint1, blocking=True)
 UR5.MoveJ(J_intermediatepoint2, blocking=True)
 # Go back home
 UR5.MoveJ(RDK.Item("Home_L", ITEM_TYPE_TARGET), True)
-
-
