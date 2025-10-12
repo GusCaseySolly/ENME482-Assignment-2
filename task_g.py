@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Oct 11 12:59:46 2025
-
-@author: Owner
-"""
-
 #### task g ###
 
 # -*- coding: utf-8 -*-
@@ -19,6 +12,7 @@ from time import sleep
 from robodk.robolink import *
 import robodk.robomath as rm
 import tools
+import robodk
 
 RDK = Robolink()
 RDK.setRunMode(RUNMODE_SIMULATE)
@@ -60,8 +54,9 @@ UR_T_TCP = UR_T_WDT @ WDT_T_CDH @ np.linalg.inv(RT_T_BBI) @ np.linalg.inv(TCP_T_
 
 
 # Convert numpy array into a RoboDK matrix
-T = rm.Mat(UR_T_TCP.tolist())
 
+T_0 = rm.Mat(UR_T_TCP.tolist())
+T = robodk.UR_2_Pose(robodk.Pose_2_UR(T_0))
 
 
 # Reset the sim
@@ -91,4 +86,5 @@ tls.mazzer_tool_detach_r_ati()
 
 # Go back home
 UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
+
 
