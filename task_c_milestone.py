@@ -145,11 +145,22 @@ time.sleep(1)
 
 UR5.MoveL(T_xos_pos, blocking = True)
 
-time.sleep(4)
+before_2nd_press = [-55.320000, -126.040000, -94.740000, -137.670000, -137.680000, -310.210000]
+second_press = [-54.200000, -126.050000, -94.740000, -137.680000, -137.680000, -310.210000]
 
-UR5.MoveL(T_zos, blocking = True)
 
+
+
+UR5.MoveJ(before_2nd_press, blocking=True)
 time.sleep(1)
+UR5.MoveL(second_press, blocking=True)
+UR5.MoveL(before_2nd_press, blocking=True)
+
+#wait 15 seconds
+time.sleep(15)
+
+safe = [-36.630000, -109.890000, -117.470000, -125.300000, -69.610000, -220.760000]
+UR5.MoveL(safe, blocking=True)
 
 UR5.MoveJ(J_intermediatepoint2, blocking=True)
 
@@ -159,9 +170,11 @@ time.sleep(1)
 
 
 # detach mazzer tool
-tls.mazzer_tool_detach_r_ati()
+#tls.mazzer_tool_detach_r_ati()
 
 # go back home
-UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
+#UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
+
+
 
 
