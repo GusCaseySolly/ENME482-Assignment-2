@@ -93,6 +93,7 @@ T_0_remove = rm.Mat(UR_T_TCP_remove.tolist())
 T_remove = robodk.UR_2_Pose(robodk.Pose_2_UR(T_0_remove))
 
 # Reset the sim
+
 robot_program = RDK.Item("Reset_Simulation_L", ITEM_TYPE_PROGRAM)
 robot_program.RunCode()
 robot_program.WaitFinished()
@@ -120,7 +121,11 @@ time.sleep(1)
 tls.student_tool_attach()
 
 time.sleep(1)
+UR5.MoveL(T_above, blocking=True)
 
+higher =[118.670000, -94.770000, 145.010000, -49.780000, 18.040000, -220.460000]
+
+UR5.MoveJ(higher, blocking=True)
 UR5.MoveJ(T_remove, blocking=True)
 
 time.sleep(1)
@@ -129,9 +134,10 @@ tls.wdt_shut()
 
 time.sleep(1)
 
-UR5.MoveJ(J_intermediatepoint1, blocking=True)
-UR5.MoveJ(J_intermediatepoint2, blocking=True)
+#UR5.MoveJ(J_intermediatepoint1, blocking=True)
+#UR5.MoveJ(J_intermediatepoint2, blocking=True)
 # Go back home
-UR5.MoveJ(RDK.Item("Home_L", ITEM_TYPE_TARGET), True)
+#UR5.MoveJ(RDK.Item("Home_L", ITEM_TYPE_TARGET), True)
+
 
 
