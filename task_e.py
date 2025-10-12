@@ -26,8 +26,8 @@ J_intermediatepoint_1 = [-35.350000, -85.850000, -126.250000, -58.440000, 88.740
 J_intermediatepoint_2 = [-28.120000, -104.880000, -113.020000, -47.960000, 90.000000, -6.840000]
 
 offsetleft = 0
-offsetforward = -30
-offsetvert = -10
+offsetforward = -40
+offsetvert = 0
 
 UR_T_MZS = np.array([
     [0.5, 0.86666, 0, 440.7],
@@ -89,9 +89,18 @@ sleep(1)
 
 # Linear motion reversed
 UR5.MoveL(T_1, blocking=True)
-UR5.MoveL(T_0, blocking=True)
+#UR5.MoveL(T_0, blocking=True)
+fix=[-27.690000, -104.390000, -112.650000, -52.960000, 89.750000, -7.250000]
+UR5.MoveL(fix, blocking=True)
+
+fully_down =[-28.900000, -109.200000, -109.890000, -51.500000, 89.790000, -51.790000]
+UR5.MoveL(fully_down, blocking=True)
 
 sleep(1)
 
+int_p=[-39.680000, -101.720000, -111.820000, -59.880000, 89.990000, 0.000000]
+UR5.MoveL(int_p, blocking=True)
+
 # Return home
 UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
+
