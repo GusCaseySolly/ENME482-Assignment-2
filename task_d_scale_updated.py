@@ -2,6 +2,7 @@
 """
 Integrated RoboDK–Scale control (Robot 1)
 UR5_R1 waits until the Rancilio scale (Robot 1) reads 20g, then returns to T_loc.
+MF_T_ML matrix rotated 21.3° clockwise about x-axis.
 """
 
 import numpy as np
@@ -37,8 +38,8 @@ else:
 # ================================
 # Define Joint Positions & Matrices
 # ================================
-J_intermediatepoint1 = [-39.78, -117.35, -109.39, -125.3, -69.61, -40.31]
-J_intermediatepoint2 = [-27.85, -89.5, -139.23, -125.3, -69.61, -40.31]
+J_intermediatepoint1 = [-9.940000, -75.580000, -103.430000, -119.020000, 63.650000, -173.840000]
+J_intermediatepoint2 = [-39.940000, -93.480000, -125.300000, -157.130000, -77.570000, -130.230000]
 J_intermediatepoint3 = [0.0, -79.56, -151.16, -87.51, -23.87, 0.0]
 
 UR_T_MF = np.array([
@@ -62,70 +63,70 @@ TCP_T_MT = np.array([
     [0, 0, 0, 1]
 ])
 
+MF_T_ML_near = np.array([
+    [1, 0, 0., 130],
+    [0, -1, 0, -154],
+    [0, 0, -1, -45],
+    [0., 0., 0., 1.]
+])
+
 MF_T_ML_loc = np.array([
-    [-0.87898362, 0.47685197, 0., 160],
-    [-0.17476683, -0.32214857, 0.93041757, -131.3],
-    [0.44367145, 0.8178218, 0.36650123, -140],
+    [1, 0, 0., 72],
+    [0, -1, 0, -154],
+    [0, 0, -1, -45],
     [0., 0., 0., 1.]
 ])
 
-MF_T_ML_pull = np.array([
-    [-0.87898362, 0.47685197, 0., 120],
-    [-0.17476683, -0.32214857, 0.93041757, -131.3],
-    [0.44367145, 0.8178218, 0.36650123, 0],
+MF_T_ML_mid = np.array([
+    [1, 0, 0., 84.905],
+    [0, -1, 0, -154],
+    [0, 0, -1, 0],
     [0., 0., 0., 1.]
 ])
 
-MF_T_ML_out = np.array([
-    [-0.87898362, 0.47685197, 0., 200],
-    [-0.17476683, -0.32214857, 0.93041757, -131.3],
-    [0.44367145, 0.8178218, 0.36650123, -58],
+MF_T_ML_end = np.array([
+    [1, 0, 0., 74.97],
+    [0, -1, 0, -154],
+    [0, 0, -1, 39.86],
     [0., 0., 0., 1.]
 ])
 
-MF_T_ML_loc_out = np.array([
-    [-0.87898362, 0.47685197, 0., 200],
-    [-0.17476683, -0.32214857, 0.93041757, -131.3],
-    [0.44367145, 0.8178218, 0.36650123, -140],
+MF_T_ML_out= np.array([
+    [1, 0, 0., 130],
+    [0, -1, 0, -154],
+    [0, 0, -1, 39.86],
     [0., 0., 0., 1.]
 ])
 
-# Apply 90° rotation to align Mazzer frames
-R = np.array([
+
+theta = 21.3 * np.pi / 180  # negative for clockwise
+R_x = np.array([
     [1, 0, 0, 0],
-    [0, np.cos(np.deg2rad(90)), -np.sin(np.deg2rad(90)), 0],
-    [0, np.sin(np.deg2rad(90)), np.cos(np.deg2rad(90)), 0],
+    [0, np.cos(theta), -np.sin(theta), 0],
+    [0, np.sin(theta),  np.cos(theta), 0],
     [0, 0, 0, 1]
 ])
-MF_T_ML_loc = MF_T_ML_loc @ R
-MF_T_ML_pull = MF_T_ML_pull @ R
-MF_T_ML_out = MF_T_ML_out @ R
-MF_T_ML_loc_out = MF_T_ML_loc_out @ R
 
+MF_T_ML_near_rotated = R_x @ MF_T_ML_near
+MF_T_ML_loc_rotated = R_x @ MF_T_ML_loc
+MF_T_ML_mid_rotated = R_x @ MF_T_ML_mid
+MF_T_ML_end_rotated = R_x @ MF_T_ML_end
+MF_T_ML_out_rotated = R_x @ MF_T_ML_out
+
+# ================================
 # Compute transforms (base to TCP)
-UR_T_TCP_loc = UR_T_MF @ MF_T_ML_loc @ np.linalg.inv(MT_T_ML) @ np.linalg.inv(TCP_T_MT)
-UR_T_TCP_pull = UR_T_MF @ MF_T_ML_pull @ np.linalg.inv(MT_T_ML) @ np.linalg.inv(TCP_T_MT)
-UR_T_TCP_out = UR_T_MF @ MF_T_ML_out @ np.linalg.inv(MT_T_ML) @ np.linalg.inv(TCP_T_MT)
-UR_T_TCP_loc_out = UR_T_MF @ MF_T_ML_loc_out @ np.linalg.inv(MT_T_ML) @ np.linalg.inv(TCP_T_MT)
+# ================================
+UR_T_TCP_near = UR_T_MF @ MF_T_ML_near_rotated @ np.linalg.inv(MT_T_ML) @ np.linalg.inv(TCP_T_MT)
+UR_T_TCP_loc = UR_T_MF @ MF_T_ML_loc_rotated @ np.linalg.inv(MT_T_ML) @ np.linalg.inv(TCP_T_MT)
+UR_T_TCP_mid = UR_T_MF @ MF_T_ML_mid_rotated @ np.linalg.inv(MT_T_ML) @ np.linalg.inv(TCP_T_MT)
+UR_T_TCP_end = UR_T_MF @ MF_T_ML_end_rotated @ np.linalg.inv(MT_T_ML) @ np.linalg.inv(TCP_T_MT)
+UR_T_TCP_out = UR_T_MF @ MF_T_ML_out_rotated @ np.linalg.inv(MT_T_ML) @ np.linalg.inv(TCP_T_MT)
 
-
-# Add 180° rotation about TCP Z
-Rz180 = np.array([
-    [np.cos(np.deg2rad(180)), -np.sin(np.deg2rad(180)), 0, 0],
-    [np.sin(np.deg2rad(180)),  np.cos(np.deg2rad(180)), 0, 0],
-    [0, 0, 1, 0],
-    [0, 0, 0, 1]
-])
-
-UR_T_TCP_loc_rotated = UR_T_TCP_loc @ Rz180
-UR_T_TCP_pull_rotated = UR_T_TCP_pull @ Rz180
-UR_T_TCP_out_rotated = UR_T_TCP_out @ Rz180
-UR_T_TCP_loc_out = UR_T_TCP_loc_out @ Rz180
-
-T_loc = rm.Mat(UR_T_TCP_loc_rotated.tolist())
-T_pull = rm.Mat(UR_T_TCP_pull_rotated.tolist())
-T_out = rm.Mat(UR_T_TCP_out_rotated.tolist())
-T_loc_out = rm.Mat(UR_T_TCP_loc_out.tolist())
+T_near = rm.Mat(UR_T_TCP_near.tolist())
+T_loc = rm.Mat(UR_T_TCP_loc.tolist())
+T_mid = rm.Mat(UR_T_TCP_mid.tolist())
+T_end = rm.Mat(UR_T_TCP_end.tolist())
+T_out = rm.Mat(UR_T_TCP_out.tolist())
 
 # ================================
 # Robot Motion Sequence
@@ -136,115 +137,53 @@ robot_program.WaitFinished()
 
 tls.mazzer_tool_attach_r_ati()
 
-UR5.MoveJ(J_intermediatepoint2, blocking=True)
-UR5.MoveJ(J_intermediatepoint1, blocking=True)
-sleep(1)
-
-UR5.MoveJ(T_loc, blocking=True)
-sleep(1)
-
-turn_1 = [-29.320000, -104.580000, -113.280000, -143.550000, -52.670000, -130.580000]
-UR5.MoveL(turn_1, blocking=True)
+UR5.MoveJ(J_intermediatepoint1, blocking = True)
 
 
-turn_2 =[-28.140000, -104.510000, -113.310000, -143.510000, -46.890000, -130.610000]
-UR5.MoveJ(turn_2, blocking=True)
-
-turn_3 =[-18.390000, -99.720000, -110.440000, -145.450000, -22.920000, -135.410000]
-UR5.MoveJ(turn_3, blocking=True)
-
-turn_4 = [-10.820000, -107.440000, -101.820000, -146.420000, 10.560000, -137.790000]
-UR5.MoveJ(turn_4, blocking=True)
-
-turn_f=[-8.270000, -107.440000, -101.830000, -146.420000, 13.150000, -137.800000]
-UR5.MoveJ(turn_f, blocking=True)
-
-let_go = [-8.270000, -107.440000, -101.830000, -146.420000, 26.690000, -137.790000]
-UR5.MoveJ(let_go, blocking=True)
-
-#UR5.MoveJ(T_pull, blocking=True)
-sleep(1)
-
-
-
-
-# # ================================
-# # Wait for Scale Fill (20 g)
-# # ================================
+# ================================
+# Wait for Scale Fill (20 g)
+# ================================
 target_weight = 20.0
 current_weight = 0.0
 
-#RDK.ShowMessage("Waiting for Robot 1 scale to reach %.1f g..." % target_weight)
-
 while current_weight < target_weight:
     if simulate:
-        UR5.MoveJ(J_intermediatepoint2, blocking=True)
-        UR5.MoveJ(J_intermediatepoint1, blocking=True)
+
+        UR5.MoveJ(J_intermediatepoint2, blocking = True)
+
+
+        UR5.MoveJ(T_near,blocking=True)
+        
         sleep(1)
 
-        UR5.MoveJ(T_loc, blocking=True)
+        UR5.MoveL(T_loc, blocking=True)
+
         sleep(1)
 
-        turn_1 = [-29.320000, -104.580000, -113.280000, -143.550000, -52.670000, -130.580000]
-        UR5.MoveL(turn_1, blocking=True)
+        UR5.MoveC(T_mid, T_end, blocking = True)
 
-
-        turn_2 =[-28.140000, -104.510000, -113.310000, -143.510000, -46.890000, -130.610000]
-        UR5.MoveJ(turn_2, blocking=True)
-
-        turn_3 =[-18.390000, -99.720000, -110.440000, -145.450000, -22.920000, -135.410000]
-        UR5.MoveJ(turn_3, blocking=True)
-
-        turn_4 = [-10.820000, -107.440000, -101.820000, -146.420000, 10.560000, -137.790000]
-        UR5.MoveJ(turn_4, blocking=True)
-
-        turn_f=[-8.270000, -107.440000, -101.830000, -146.420000, 13.150000, -137.800000]
-        UR5.MoveJ(turn_f, blocking=True)
-
-        let_go = [-8.270000, -107.440000, -101.830000, -146.420000, 26.690000, -137.790000]
-        UR5.MoveJ(let_go, blocking=True)
-
-        #UR5.MoveJ(T_pull, blocking=True)
         sleep(1)
-        current_weight += 20  # simulate fill rate
+
+        UR5.MoveL(T_out, blocking = True)
+    
+        current_weight += 2.5  # simulate fill rate
     else:
-        UR5.MoveJ(J_intermediatepoint2, blocking=True)
-        UR5.MoveJ(J_intermediatepoint1, blocking=True)
         sleep(1)
-
         UR5.MoveJ(T_loc, blocking=True)
         sleep(1)
-
-        turn_1 = [-29.320000, -104.580000, -113.280000, -143.550000, -52.670000, -130.580000]
-        UR5.MoveL(turn_1, blocking=True)
-
-
-        turn_2 =[-28.140000, -104.510000, -113.310000, -143.510000, -46.890000, -130.610000]
-        UR5.MoveJ(turn_2, blocking=True)
-
-        turn_3 =[-18.390000, -99.720000, -110.440000, -145.450000, -22.920000, -135.410000]
-        UR5.MoveJ(turn_3, blocking=True)
-
-        turn_4 = [-10.820000, -107.440000, -101.820000, -146.420000, 10.560000, -137.790000]
-        UR5.MoveJ(turn_4, blocking=True)
-
-        turn_f=[-8.270000, -107.440000, -101.830000, -146.420000, 13.150000, -137.800000]
-        UR5.MoveJ(turn_f, blocking=True)
-
-        let_go = [-8.270000, -107.440000, -101.830000, -146.420000, 26.690000, -137.790000]
-        UR5.MoveJ(let_go, blocking=True)
-
-        #UR5.MoveJ(T_pull, blocking=True)
+        UR5.MoveJ(T_pull, blocking=True)
         sleep(1)
-
         current_weight = client.read()
-    #RDK.ShowMessage(f"[Robot 1] Current weight: {current_weight:.2f} g")
     sleep(0.5)
 
-UR5.MoveJ(T_out, blocking=True)
-sleep(1)
+UR5.MoveJ(J_intermediatepoint2, blocking = True)
+
+UR5.MoveJ(J_intermediatepoint1, blocking = True)
+
+
+tls.mazzer_tool_detach_r_ati()
+
 
 RDK.ShowMessage("✅ Robot 1 scale reached %.1f g. Returning to T_loc..." % current_weight)
 UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
 RDK.ShowMessage("☕ Robot 1 cycle complete.")
-
