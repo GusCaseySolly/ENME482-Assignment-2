@@ -45,7 +45,7 @@ TCP_T_MT =  np.array([[ np.cos(-50* np.pi/180),     -np.sin(-50* np.pi/180),    
                  [  0,                  0,   1, 0 ],
                  [  0.000000,     0.000000,     0.000000,    1.000000 ]])
 
-import numpy as np
+#import numpy as np
 pb_os_x = 10
 pb_os_x_pos = 16
 pb_os_z = 20
@@ -174,6 +174,7 @@ time.sleep(1)
 
 # go back home
 #UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
+
 
 
 
