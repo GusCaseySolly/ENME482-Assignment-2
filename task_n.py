@@ -20,7 +20,7 @@ def taskn():
     J_intermediatepoint = [-113.370000, -85.520000, -131.270000, -145.190000, -23.870000, -217.450000]
     J_intermediatepoint2 = [-169.030000, -61.190000, -98.540000, -106.340000, -198.050000, -220.630000]
 
-
+    offset = -25
 
     # Define the position where the mazzer tool slots into the cup dispensor index
 
@@ -34,7 +34,7 @@ def taskn():
                         [0, 0, 1, 31.2],
                         [0.000000, 0.000000, 0.000000, 1.000000]])
 
-    CT_T_PB = np.array([[1, 0, 0, -104.5],
+    CT_T_PB = np.array([[1, 0, 0, -104.5-offset],
                         [0, 1, 0, 0],
                         [0, 0, 1, 186.62],
                         [0.000000, 0.000000, 0.000000, 1.000000]])
@@ -64,7 +64,7 @@ def taskn():
 
     RS_T_cup_up = np.array([[0, 0, 1, 157.72],
                             [0, -1, 0, -19],
-                            [1, 0, 0, 24.24 + 30],
+                            [1, 0, 0, 24.24 + 15],
                             [0, 0, 0, 1.000000]])
 
     CT_T_cup = np.array([[1, 0, 0, -104.5],
@@ -92,6 +92,7 @@ def taskn():
     # Define a horizontal offset distance (in mm)
     offset_distance = -100  # move 100 mm horizontally before approaching
     offset_distance2 = -300
+    offset_distance3 = -30
     # Create an offset pose relative to the target T
     T_approach = T * rm.transl(0, 0, offset_distance)
     T_cup_out = T_cup_up * rm.transl(0, 0, offset_distance2)
