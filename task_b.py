@@ -110,6 +110,7 @@ def taskb():
     time.sleep(1)
     #UR5.MoveJ(J_intermediatepoint_1, blocking=True)
     #tls.mazzer_tool_detach_l_ati()
+    UR5.MoveJ(RDK.Item("Home_L", ITEM_TYPE_TARGET), True)
 
 
 #taskb()

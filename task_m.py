@@ -36,7 +36,7 @@ def taskm():
     # index pull shut
     CD_T_PB = np.array([[1, 0, 0, -10.8],
                         [0, 1, 0, 70.9],
-                        [0, 0, 1, -39.3],
+                        [0, 0, 1, -37.3],
                         [0.000000, 0.000000, 0.000000, 1.000000]])
 
     MT_T_PB = np.array([[1, 0, 0, 0],
@@ -84,8 +84,8 @@ def taskm():
     robot_program.RunCode()
     robot_program.WaitFinished()
 
-    # pick up mazzer tool
-    #tls.mazzer_tool_attach_r_ati()
+    # pick up mazzer tool REMOVE THIS
+    
 
     # joint movement using a joint array
 

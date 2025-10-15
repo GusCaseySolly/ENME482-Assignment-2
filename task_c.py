@@ -116,6 +116,7 @@ def taskc():
     T_zos = rm.Mat(UR_T_TCP_zos.tolist())
 
     # reset the sim
+    UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
     robot_program = RDK.Item("Reset_Simulation_R", ITEM_TYPE_PROGRAM)
     robot_program.RunCode()
     robot_program.WaitFinished()
@@ -125,7 +126,7 @@ def taskc():
 
     # joint movement using a joint array
     UR5.MoveJ(J_intermediatepoint2, blocking=True)
-    #UR5.MoveJ(J_intermediatepoint3, blocking=True)
+    UR5.MoveJ(J_intermediatepoint3, blocking=True)
     UR5.MoveJ(J_intermediatepoint1, blocking=True)
 
 

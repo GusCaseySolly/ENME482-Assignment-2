@@ -88,9 +88,9 @@ def taskd():
     ])
 
     MF_T_ML_end = np.array([
-        [1, 0, 0., 74.96  - 10],
+        [1, 0, 0., 74.96  - 15],
         [0, -1, 0, -154 ],
-        [0, 0, -1, 39.86 + 10],
+        [0, 0, -1, 39.86 + 15],
         [0., 0., 0., 1.]
     ])
 
@@ -187,9 +187,15 @@ def taskd():
             current_weight = client.read()
         sleep(0.5)
 
-    UR5.MoveJ(J_intermediatepoint2, blocking=True)
+    
 
-    UR5.MoveJ(J_intermediatepoint1, blocking=True)
+
+    #UR5.MoveJ(J_intermediatepoint2, blocking=True)
+    #UR5.MoveL(J_intermediatepoint1, blocking=True)
+   
+
+    
+    
 
     #tls.mazzer_tool_detach_r_ati()
 
