@@ -26,9 +26,9 @@ def taskj():
 
     # DEFINE MATRICES HERE
     # define a joint angle array for an intermediate point: theta_1, theta_2, ..., theta_6 (from base to tool)
-    J_intermediatepoint1 = [147.180000, -90.000000, 131.270000, -89.990000, -90.000000, -89.990000]
-    J_intermediatepoint2 = [179.010000, -90.000000, 75.580000, -89.990000, -90.000000, -89.990000]
-    J_intermediatepoint3 = [-69.610000, -63.650000, -151.160000, -89.500000, -93.480000, 0.000000]
+    J_intermediatepoint1 = [-25.250000, -82.970000, -145.010000, -129.140000, -77.190000, -220.220000]
+    #J_intermediatepoint2 = [179.010000, -90.000000, 75.580000, -89.990000, -90.000000, -89.990000]
+    #J_intermediatepoint3 = [-69.610000, -63.650000, -151.160000, -89.500000, -93.480000, 0.000000]
 
     # Define the position where the mazzer tool slots into the cup dispenser index
     UR_T_WDT = np.array([[-1,  0,  0, 590.2],
@@ -53,7 +53,7 @@ def taskj():
 
     WDT_T_CDH_set = np.array([[0, 0, -1, 120],
                         [0, 1, 0, 0],
-                        [1, 0, 0, -30],
+                        [1, 0, 0, -30 - 10],
                         [0, 0, 0, 1]])
 
     RT_T_BBI = np.array([[1, 0, 0, -32],
@@ -70,6 +70,18 @@ def taskj():
                      [ np.sin(-50 * np.pi/180),     np.cos(-50 * np.pi/180),    0,  0 ],
                      [  0,                  0,   1, 0 ],
                      [  0.000000,     0.000000,     0.000000,    1.000000 ]])
+
+
+ 
+
+    fix = -2.4
+
+    tilt = np.array([[np.cos(fix * np.pi / 180), 0, -np.sin(fix * np.pi / 180), 0],
+                     [0, 1, 0, 0],
+                     [np.sin(fix * np.pi / 180), 0, np.cos(fix * np.pi / 180), 0],
+                     [0, 0, 0, 1.000000]])
+
+    WDT_T_CDH_set = WDT_T_CDH_set @ tilt
 
     ####new with 2.4 degree rotation
     #TCP_T_RT = np.array([
@@ -97,17 +109,17 @@ def taskj():
 
     # Reset the sim
 
-    robot_program = RDK.Item("Reset_Simulation_L", ITEM_TYPE_PROGRAM)
-    robot_program.RunCode()
-    robot_program.WaitFinished()
+    #robot_program = RDK.Item("Reset_Simulation_L", ITEM_TYPE_PROGRAM)
+    #robot_program.RunCode()
+    #robot_program.WaitFinished()
 
     tls.wdt_open()
 
     time.sleep(1)
 
-    UR5.MoveJ(J_intermediatepoint2, blocking=True)
+    #UR5.MoveJ(J_intermediatepoint2, blocking=True)
 
-    time.sleep(1)
+    
 
     UR5.MoveJ(J_intermediatepoint1, blocking=True)
 
@@ -116,7 +128,9 @@ def taskj():
     UR5.MoveJ(T_remove, blocking=True)
 
     time.sleep(1)
+    clash_royale = [1.700000, -103.170000, -139.240000, -113.270000, -88.740000, -224.370000]
 
+    UR5.MoveJ(clash_royale,blocking=True)
     UR5.MoveJ(T_set,blocking=True)
 
     time.sleep(1)
@@ -124,11 +138,11 @@ def taskj():
     tls.student_tool_attach()
 
     time.sleep(1)
-    UR5.MoveL(T_above, blocking=True)
 
-    higher =[118.670000, -94.770000, 145.010000, -49.780000, 18.040000, -220.460000]
+    UR5.MoveJ(T_above, blocking=True)
 
-    UR5.MoveJ(higher, blocking=True)
+    sleep(1)
+
     UR5.MoveJ(T_remove, blocking=True)
 
     time.sleep(1)

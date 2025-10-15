@@ -28,8 +28,8 @@ def tasktuv():
     # define a joint angle array for an intermediate point: theta_1, theta_2, ..., theta_6 (from base to tool)
 
     J_intermediatepoint_1 = [-97.390000, -80.080000, -139.240000, 39.680000, 87.290000, -217.150000]
-    J_intermediatepoint_2 = [-95.950000, -106.050000, -133.470000, 56.990000, 104.720000, -219.880000]
-    J_intermediatepoint_3 = [-52.390000, -64.210000, -93.070000, -106.050000, 90.000000, -197.390000]
+    J_intermediatepoint_2 = [-104.240000, -78.640000, -133.470000, -148.090000, -104.680000, -40.390000]
+    J_intermediatepoint_3 = [-101.720000, -77.190000, -116.150000, -72.870000, 95.950000, -40.390000]
 
     # Define the position where the cup tool moves
 
@@ -71,7 +71,7 @@ def tasktuv():
     # ---------------------------------------------------------------------------------------------------------------
 
 
-    UR5.MoveJ(J_intermediatepoint_1, blocking=True)
+    #UR5.MoveJ(J_intermediatepoint_1, blocking=True)
 
     UR5.MoveJ(T, blocking=True)
     UR5.MoveL(T_eng, blocking=True)
@@ -101,6 +101,7 @@ def tasktuv():
 
     T0_eng_2 = rm.Mat(UR_T_TCP_2_eng.tolist())
     T_eng_2 = robodk.UR_2_Pose(robodk.Pose_2_UR(T0_eng_2))
+    #-----------------------------------------------------------------------------------------------------------------
 
     UR5.MoveJ(T_2, blocking=True)
     UR5.MoveL(T_eng_2, blocking=True)

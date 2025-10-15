@@ -90,3 +90,5 @@ def taskp():
     time.sleep(1)
     RDK.ShowMessage("✅ Robot 1 scale reached %.1f g. Returning to T_loc..." % current_weight)
     UR5.MoveJ(J_intermediatepoint, blocking=True)
+
+#taskp()

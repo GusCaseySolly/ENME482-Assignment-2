@@ -28,14 +28,14 @@ def taskd():
     # ================================
     # Scale Setup (Robot 1)
     # ================================
-    IP_RANCILIO_1 = "192.168.20.4"
-    client = modbus_scale_client.ModbusScaleClient(host=IP_RANCILIO_1)
+    IP_MAZZER_1 = "192.168.20.3"
+    client = modbus_scale_client.ModbusScaleClient(host=IP_MAZZER_1)
 
     if not client.server_exists():
         RDK.ShowMessage("⚠ No scale detected — output will be simulated (Robot 1).")
         simulate = True
     else:
-        RDK.ShowMessage("✅ Scale connected (Robot 1).")
+        #RDK.ShowMessage("✅ Scale connected (Robot 1).")
         simulate = False
 
     # ================================
@@ -88,9 +88,9 @@ def taskd():
     ])
 
     MF_T_ML_end = np.array([
-        [1, 0, 0., 74.97],
-        [0, -1, 0, -154],
-        [0, 0, -1, 39.86],
+        [1, 0, 0., 74.96  - 10],
+        [0, -1, 0, -154 ],
+        [0, 0, -1, 39.86 + 10],
         [0., 0., 0., 1.]
     ])
 
@@ -133,11 +133,11 @@ def taskd():
     # ================================
     # Robot Motion Sequence
     # ================================
-    robot_program = RDK.Item("Reset_Simulation_R", ITEM_TYPE_PROGRAM)
-    robot_program.RunCode()
-    robot_program.WaitFinished()
+    # robot_program = RDK.Item("Reset_Simulation_R", ITEM_TYPE_PROGRAM)
+    # robot_program.RunCode()
+    # robot_program.WaitFinished()
 
-    tls.mazzer_tool_attach_r_ati()
+    #tls.mazzer_tool_attach_r_ati() #REMOVE THIS FOR FINAL---------------------------------hjsfdjksdjsdghjsDGHghjssesgsghsgdzhjsgdjhz
 
     UR5.MoveJ(J_intermediatepoint1, blocking=True)
 
@@ -166,13 +166,24 @@ def taskd():
 
             UR5.MoveL(T_out, blocking=True)
 
-            current_weight += 2.5  # simulate fill rate
+            current_weight += 20  # simulate fill rate
         else:
+            UR5.MoveJ(J_intermediatepoint2, blocking=True)
+
+            UR5.MoveJ(T_near, blocking=True)
+
             sleep(1)
-            UR5.MoveJ(T_loc, blocking=True)
+
+            UR5.MoveL(T_loc, blocking=True)
+
             sleep(1)
-            UR5.MoveJ(T_pull, blocking=True)
+
+            UR5.MoveC(T_mid, T_end, blocking=True)
+
             sleep(1)
+
+            UR5.MoveL(T_out, blocking=True)
+
             current_weight = client.read()
         sleep(0.5)
 
@@ -180,11 +191,11 @@ def taskd():
 
     UR5.MoveJ(J_intermediatepoint1, blocking=True)
 
-    tls.mazzer_tool_detach_r_ati()
+    #tls.mazzer_tool_detach_r_ati()
 
-    RDK.ShowMessage("✅ Robot 1 scale reached %.1f g. Returning to T_loc..." % current_weight)
+    #RDK.ShowMessage("✅ Robot 1 scale reached %.1f g. Returning to T_loc..." % current_weight)
     UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
-    RDK.ShowMessage("☕ Robot 1 cycle complete.")
+    #RDK.ShowMessage("☕ Robot 1 cycle complete.")
 
-
+    
 #taskd()

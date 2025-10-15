@@ -124,7 +124,7 @@ def taski():
     # ------------------------------------------------------------
 
     time.sleep(1)
-    tls.mazzer_tool_detach_r_ati()
+    #tls.mazzer_tool_detach_r_ati()
 
     # Return home
     # UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)

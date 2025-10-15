@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Oct  8 20:51:26 2025
-@author: Owner
-Reversed tool path
+Created on Mon Sep 22 12:09:02 2025
+
+@author: fsmcn
 """
 
 import numpy as np
@@ -14,98 +14,110 @@ import tools
 import robodk
 import math
 
-# --- SETUP ROBOT ---
 RDK = Robolink()
 #RDK.setRunMode(RUNMODE_SIMULATE)
-#RDK.setRunMode(RUNMODE_RUN_ROBOT)
+# RDK.setRunMode(RUNMODE_RUN_ROBOT)
 UR5 = RDK.Item("UR5", ITEM_TYPE_ROBOT)
+
 tls = tools.Tools(RDK)
 
 def taske():
 
 
-    # --- DEFINE MATRICES ---
-    J_intermediatepoint_1 = [-35.350000, -85.850000, -126.250000, -58.440000, 88.740000, -5.100000]
-    J_intermediatepoint_2 = [-28.120000, -104.880000, -113.020000, -47.960000, 90.000000, -6.840000]
+    # DEFINE MATRICES HERE
+    # define a joint angle array for an intermediate point: theta_1, theta_2, ..., theta_6 (from base to tool)
+
+    J_intermediatepoint_1 = [113.270000, -78.640000, 119.040000, -129.140000, -72.870000, -206.470000]
+    J_intermediatepoint_2 = [98.840000, -75.750000, 118.280000, -116.580000, -33.370000, -67.450000]
+    J_intermediatepoint_3 = [101.720000, -75.750000, 124.810000, -114.710000, -42.570000, -65.650000]
+    J_intermediatepoint_4 = [117.430000, -97.390000, 113.270000, -111.820000, -87.130000, -199.460000]
+
+  
+
+    # Define the position where the mazzer tool moves to to unlock the mazzer scale
 
     offsetleft = 0
     offsetforward = -40
-    offsetvert = 0
+    offsetvert = -10
 
-    UR_T_MZS = np.array([
-        [0.5, 0.86666, 0, 440.7],
-        [-0.8666, 0.5, 0, -275.3],
-        [0, 0, 1, 42.4],
-        [0, 0, 0, 1.000000]
-    ])
+    UR_T_MZS = np.array([[0.5, 0.86666, 0, 440.7],
+                         [-0.8666, 0.5, 0, -275.3],
+                         [0, 0, 1, 42.4],
+                         [0, 0, 0, 1.000000]])
 
-    MZS_T_SW0 = np.array([
-        [1, 0, 0, 31.5],
-        [0, -1, 0, -56.38],
-        [0, 0, -1, -15],
-        [0, 0, 0, 1.000000]
-    ])
+    MZS_T_SW0 = np.array([[1, 0, 0, 50],
+                          [0, -1, 0, -56.38],
+                          [0, 0, -1, -15],
+                          [0, 0, 0, 1.000000]])
 
-    MZS_T_SW1 = np.array([
-        [1, 0, 0, 31.5 + offsetforward],
-        [0, -1, 0, -56.38 + offsetleft],
-        [0, 0, -1, -15 + offsetvert],
-        [0, 0, 0, 1.000000]
-    ])
+    MZS_T_SW_rot = np.array([[1, 0, 0, 0],
+                         [0, np.cos(60 * np.pi / 180), -np.sin(60 * np.pi / 180), 0],
+                         [0, np.sin(60 * np.pi / 180), np.cos(60 * np.pi / 180), 0],
+                         [0.000000, 0.000000, 0.000000, 1.000000]])
 
-    MT_T_SW = np.array([
-        [1, 0, 0, 0],
-        [0, 1, 0, 0],
-        [0, 0, 1, 106],
-        [0, 0, 0, 1.000000]
-    ])
+    MZS_T_SW1 = np.array([[1, 0, 0, 31.5 + offsetforward],
+                          [0, -1, 0, -56.38 + offsetleft],
+                          [0, 0, -1, -15 + offsetvert],
+                          [0, 0, 0, 1.000000]])
 
-    TCP_T_MT = np.array([
-        [np.cos(-50*np.pi/180), -np.sin(-50*np.pi/180), 0, 0],
-        [np.sin(-50*np.pi/180), np.cos(-50*np.pi/180), 0, 0],
-        [0, 0, 1, 0],
-        [0, 0, 0, 1.000000]
-    ])
+    MT_T_SW = np.array([[1, 0, 0, 0],
+                        [0, 1, 0, 0],
+                        [0, 0, 1, 106],
+                        [0.000000, 0.000000, 0.000000, 1.000000]])
 
-    UR_T_TCP_switch_off = UR_T_MZS @ MZS_T_SW0 @ np.linalg.inv(MT_T_SW) @ np.linalg.inv(TCP_T_MT)
-    UR_T_TCP_switch_on = UR_T_MZS @ MZS_T_SW1 @ np.linalg.inv(MT_T_SW) @ np.linalg.inv(TCP_T_MT)
+    TCP_T_MT = np.array([[np.cos(-50 * np.pi / 180), -np.sin(-50 * np.pi / 180), 0, 0],
+                         [np.sin(-50 * np.pi / 180), np.cos(-50 * np.pi / 180), 0, 0],
+                         [0, 0, 1, 0],
+                         [0.000000, 0.000000, 0.000000, 1.000000]])
 
+    UR_T_TCP_switch_off = UR_T_MZS @ MZS_T_SW0 @ MZS_T_SW_rot @ np.linalg.inv(MT_T_SW) @  np.linalg.inv(TCP_T_MT)
+
+    UR_T_TCP_switch_on = UR_T_MZS @ MZS_T_SW1 @ MZS_T_SW_rot @ np.linalg.inv(MT_T_SW) @  np.linalg.inv(TCP_T_MT)
+
+    # convert numpy array into an RDK matrix
     T_0B = rm.Mat(UR_T_TCP_switch_off.tolist())
     T_1B = rm.Mat(UR_T_TCP_switch_on.tolist())
     T_0 = robodk.UR_2_Pose(robodk.Pose_2_UR(T_0B))
     T_1 = robodk.UR_2_Pose(robodk.Pose_2_UR(T_1B))
 
-    # --- RESET SIMULATION ---
-    robot_program = RDK.Item("Reset_Simulation_R", ITEM_TYPE_PROGRAM)
+    # reset the sim
+    robot_program = RDK.Item("Reset_Simulation_L", ITEM_TYPE_PROGRAM)
     robot_program.RunCode()
     robot_program.WaitFinished()
 
-    # --- ATTACH TOOL ---
-    tls.mazzer_tool_attach_r_ati()
+    # pick up rancilio tool
+    #tls.mazzer_tool_attach_l_ati()
 
-    # --- REVERSED MOTION SEQUENCE ---
-    # Move through intermediate joints in reverse
-    #UR5.MoveJ(J_intermediatepoint_2, blocking=True)
+    # joint movement using a joint array
+
     UR5.MoveJ(J_intermediatepoint_1, blocking=True)
 
-    sleep(1)
+    UR5.MoveJ(J_intermediatepoint_3, blocking=True)
 
-    # Linear motion reversed
-    UR5.MoveL(T_1, blocking=True)
-    #UR5.MoveL(T_0, blocking=True)
-    fix=[-27.690000, -104.390000, -112.650000, -52.960000, 89.750000, -7.250000]
-    UR5.MoveL(fix, blocking=True)
+    time.sleep(1)
+    # linear movement using an HT matrix
+    UR5.MoveJ(T_1, blocking=True)
 
-    fully_down =[-28.900000, -109.200000, -109.890000, -51.500000, 89.790000, -51.790000]
-    UR5.MoveL(fully_down, blocking=True)
+    time.sleep(1)
 
-    sleep(1)
+    UR5.MoveL(T_0, blocking=True)
+    fully_down =[104.810000, -67.090000, 124.810000, -137.800000, -32.460000, -23.810000]
+    UR5.MoveJ(fully_down, blocking=True)
 
-    int_p=[-39.680000, -101.720000, -111.820000, -59.880000, 89.990000, 0.000000]
-    UR5.MoveL(int_p, blocking=True)
 
-    # Return home
-    UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)
+    time.sleep(1)
+
+    UR5.MoveJ(J_intermediatepoint_2, blocking=True)
+
+
+    time.sleep(1)
+
+    UR5.MoveJ(J_intermediatepoint_4, blocking=True)
+
+    time.sleep(1)
+    
+    #UR5.MoveJ(J_intermediatepoint_1, blocking=True)
+    tls.mazzer_tool_detach_l_ati()
 
 
 #taske()

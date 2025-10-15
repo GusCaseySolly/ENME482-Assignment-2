@@ -117,7 +117,7 @@ def taskl():
     # -------------------------------------------------------------------------------------------------------------
 
     T_rotated_liner_off = np.array([[1, 0, 0, 0],
-                                    [0, np.cos(-15 * np.pi / 180), -np.sin(-15 * np.pi / 180), +5],
+                                    [0, np.cos(-15 * np.pi / 180), -np.sin(-15 * np.pi / 180), -22.5],
                                     [0, np.sin(-15 * np.pi / 180), np.cos(-15 * np.pi / 180), -50],
                                     [0, 0, 0, 1.000000]])
 
@@ -137,9 +137,12 @@ def taskl():
 
     # pick up rancilio tool
     #tls.rancilio_tool_attach_r_ati()
+    inter=[-68.540000, -75.750000, -152.220000, -137.760000, -33.910000, -212.830000]
+    UR5.MoveJ(inter, blocking=True)
+
 
     UR5.MoveJ(J_intermediatepoint_1, blocking=True)
-
+    
     UR5.MoveJ(T_rot_d, blocking=True)
     UR5.MoveL(T_rot, blocking=True)
     UR5.MoveL(T_rot_int, blocking=True)

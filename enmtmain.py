@@ -28,7 +28,7 @@ import task_l
 import task_m
 import task_n
 import task_o
-#import task_p
+import task_p
 import task_q
 import task_r
 import task_s
@@ -42,20 +42,21 @@ UR5 = RDK.Item("UR5", ITEM_TYPE_ROBOT)
 
 tls = tools.Tools(RDK)
 
-task_b.taskb()
-task_a.taska()
-task_c.taskc()
-task_d.taskd()
+#task_a.taska()
+#task_b.taskb()
+#task_c.taskc()
+#task_d.taskd()
+#task_e.taske()
 task_f.taskf()
 task_g_h.taskgh()
-task_e.taske()
 task_i.taski()
+task_m.taskm()
+task_n.taskn()
 task_j.taskj()
 task_k.taskk()
 task_l.taskl()
-task_m.taskm()
-task_n.taskn()
 task_o.tasko()
+task_p.taskp()
 task_q.taskq()
 task_s.tasks()
 task_t_u_v.tasktuv()

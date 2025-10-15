@@ -121,7 +121,7 @@ def taskc():
     robot_program.WaitFinished()
 
     # pick up mazzer tool
-    tls.mazzer_tool_attach_r_ati()
+    #tls.mazzer_tool_attach_r_ati()
 
     # joint movement using a joint array
     UR5.MoveJ(J_intermediatepoint2, blocking=True)
@@ -153,12 +153,14 @@ def taskc():
 
 
     UR5.MoveJ(before_2nd_press, blocking=True)
+
     time.sleep(1)
+     #wait 15 seconds
+    time.sleep(15)
     UR5.MoveL(second_press, blocking=True)
     UR5.MoveL(before_2nd_press, blocking=True)
 
-    #wait 15 seconds
-    time.sleep(15)
+   
 
     safe = [-36.630000, -109.890000, -117.470000, -125.300000, -69.610000, -220.760000]
     UR5.MoveL(safe, blocking=True)

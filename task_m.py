@@ -85,7 +85,7 @@ def taskm():
     robot_program.WaitFinished()
 
     # pick up mazzer tool
-    tls.mazzer_tool_attach_r_ati()
+    #tls.mazzer_tool_attach_r_ati()
 
     # joint movement using a joint array
 
@@ -111,6 +111,8 @@ def taskm():
     time.sleep(1)
 
     UR5.MoveJ(J_intermediatepoint, blocking=True)
+
+    tls.mazzer_tool_detach_r_ati()
 
     # go back home
     UR5.MoveJ(RDK.Item("Home_R", ITEM_TYPE_TARGET), True)

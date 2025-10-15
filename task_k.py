@@ -74,15 +74,14 @@ def taskk():
     T_intermediate = robodk.UR_2_Pose(robodk.Pose_2_UR(T0_intermediate))
 
     # reset the sim
-    robot_program = RDK.Item("Reset_Simulation_R", ITEM_TYPE_PROGRAM)
-    robot_program.RunCode()
-    robot_program.WaitFinished()
+    #robot_program = RDK.Item("Reset_Simulation_R", ITEM_TYPE_PROGRAM)
+    #robot_program.RunCode()
+    #robot_program.WaitFinished()
 
-    # pick up rancilio tool
-    tls.rancilio_tool_attach_r_ati()
-    #time.sleep(1)
+    
+   
 
-    UR5.MoveJ(J_intermediatepoint, blocking=True)
+    #UR5.MoveJ(J_intermediatepoint, blocking=True)
     #time.sleep(1)
 
     UR5.MoveL(T_intermediate, blocking=True)

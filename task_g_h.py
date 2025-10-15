@@ -95,15 +95,15 @@ def taskgh():
     T_remove = robodk.UR_2_Pose(robodk.Pose_2_UR(T_0_remove))
 
     # Reset the sim
-    #robot_program = RDK.Item("Reset_Simulation_L", ITEM_TYPE_PROGRAM)
-    #robot_program.RunCode()
-    #robot_program.WaitFinished()
+    #robot_program = RDK.Item("Reset_Simulation_L", ITEM_TYPE_PROGRAM) #gedt rid og this
+    #robot_program.RunCode() #get rid of this
+    #robot_program.WaitFinished() #get rid of this
 
     # Pick up mazzer tool
 
 
 
-    #tls.rancilio_tool_attach_l_ati()
+    #tls.rancilio_tool_attach_l_ati() #get rid of this fnhfnhfnhtnhfrftnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
 
     tls.wdt_open()
 

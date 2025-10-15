@@ -105,13 +105,19 @@ def taskr():
     not_final_coffee = [-146.440000, -71.420000, -136.350000, -150.780000, -20.910000, -220.370000]
     mid_coffee = [-116.150000, -78.640000, -139.240000, -139.240000, -20.920000, -220.370000]
     retract = [-108.940000, -71.420000, -146.450000, -143.570000, 13.710000, -220.360000]
+    fake_out = [-146.440000, -80.080000, -137.800000, -130.580000, -20.910000, -205.610000]
 
     time.sleep(1)
 
     UR5.MoveJ(mid_coffee, blocking=True)
     UR5.MoveL(not_final_coffee, blocking=True)
+
+    UR5.MoveJ(fake_out, blocking = True)
+
     UR5.MoveJ(final_coffee, blocking=True)
     time.sleep(1)
+
+
 
     tls.cup_tool_open_ur5()
 
